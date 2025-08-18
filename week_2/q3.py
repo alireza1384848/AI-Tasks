@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-img = cv2.imread(r"D:\techstack2025-ai\week2\assets\bacteria.jpg", cv2.IMREAD_GRAYSCALE)
+img = cv2.imread(r"./Image/bacteria.jpg", cv2.IMREAD_GRAYSCALE)
 dx,dy= img.shape
 _, binary = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
@@ -10,9 +10,11 @@ binary = cv2.bitwise_not(binary)
 cv2kernel = cv2.getStructuringElement(cv2.MORPH_RECT , (35,35))
 
 Eroide = cv2.erode(binary , cv2kernel , iterations=1)
- 
 contours, _ = cv2.findContours(Eroide, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-print(f"number of Bacteria in Image : {len(contours)-1}")
+num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(Eroide)
+
+print(f"number of Bacteria in Image by contours : {len(contours)}")
+print(f"number of Bacteria in Image by connected components : {num_labels - 1}")
 
 Eroide = cv2.cvtColor(Eroide , cv2.COLOR_GRAY2BGR)
 for cnt in contours:
@@ -24,7 +26,10 @@ for cnt in contours:
         cv2.rectangle(Eroide, (x, y), (x + w, y + h), (0, 255, 0), 2)
         cv2.putText(Eroide , "*" ,(x + (w//2) , y + (h//2)) , cv2.FONT_HERSHEY_SIMPLEX , 0.5 , (0,0,255),1)    
 
-
+for i in range(1, num_labels):
+    x, y, w, h = stats[i , :4]
+    cv2.rectangle(Eroide, (x, y), (x + w, y + h), (255, 0, 0), 1)
+    cv2.putText(Eroide, str(i), (x + 5, y + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
 
 cv2.imshow("Counter",Eroide)
 cv2.waitKey(0)

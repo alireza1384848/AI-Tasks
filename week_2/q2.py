@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 # Read the image
-img = cv2.imread(r"D:\techstack2025-ai\week2\assets\bacteria.jpg", cv2.IMREAD_GRAYSCALE)
+img = cv2.imread(r"./Image/bacteria.jpg", cv2.IMREAD_GRAYSCALE)
 # For black and white image:
 _, binary = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 

@@ -144,5 +144,5 @@ for image in imageName:
 
     # Save quantized image (convert back to [0, 255] and BGR for OpenCV)
     quantized_image_bgr = (cv2.cvtColor(quantized, cv2.COLOR_RGB2BGR) * 255.0).astype(np.uint8)
-    cv2.imwrite('quantized_'+image + '.png', quantized_image_bgr)
+    cv2.imwrite('quantized_'+ image + '.png', quantized_image_bgr)
 
